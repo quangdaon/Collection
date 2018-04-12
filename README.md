@@ -19,8 +19,10 @@ const animals = new Collection(Animal);
 
 **TypeScript**
 
-	import Collection from './path/to/collection.js';
-	const animals: Collection<Animal> = new Collection(Animal);
+```typescript
+import Collection from './path/to/collection.js';
+const animals: Collection<Animal> = new Collection(Animal);
+```
 
 #### Generating objects
 
