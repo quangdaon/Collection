@@ -12,8 +12,10 @@ I recommend that you manually download one of the files in the [dist](dist) fold
 
 **JavaScript**
 
-	import Collection from './path/to/collection.js';
-	const animals = new Collection(Animal);
+```javascript
+import Collection from './path/to/collection.js';
+const animals = new Collection(Animal);
+```
 
 **TypeScript**
 
@@ -24,7 +26,9 @@ I recommend that you manually download one of the files in the [dist](dist) fold
 
 The first major feature of this library is automatically filling the collection with a specified amount of objects using the `.generate` function. This functions takes two parameters: the number of items to generate and an array of parameters to pass into the constructor. For example, say the Animal class from above has a signature of `(id: number, name: string, legs: number)`.The Coding Train You can create thirty animals with 2 legs named Paul like so:
 
-	animals.generate(30, [1, 'Paul', 2])
+```javascript
+animals.generate(30, [1, 'Paul', 2])
+```
 
 Of course, this would end up creating a series of identical objects, and due to the limitations of JavaScript, you can't exactly pass in a generator function to generate a different value for each member. While I could simply evaluate each parameter that is a function, that removes the ability to pass in a callback function to the class. Therefore, the Collection library comes with a set of static methods to help with this.
 
@@ -42,13 +46,15 @@ This is just a shorthand for `Collection.eval(i => i)` and compiles into the cur
 
 **Example**
 
-	animals.generate(5, [
-		Collection.index,
-		Collection.eval(() => randomFromArray(animalNames)),
-		Collection.cycle([2, 4, 8])
-	]);
-	
-	//= [{id: 0, name: 'Random Name 1', legs: 2}, {id: 1, name: 'Random Name 2', legs: 4}, {id: 2, name: 'Random Name 3', legs: 8} ...]
+```javascript
+animals.generate(5, [
+	Collection.index,
+	Collection.eval(() => randomFromArray(animalNames)),
+	Collection.cycle([2, 4, 8])
+]);
+
+//= [{id: 0, name: 'Random Name 1', legs: 2}, {id: 1, name: 'Random Name 2', legs: 4}, {id: 2, name: 'Random Name 3', legs: 8} ...]
+```
 
 #### Dynamically add objects
 
@@ -56,19 +62,23 @@ You can use `.add()` to manually add an object of the correct type. Note that th
 
 **Example**
 
-	const myAnimal = new Animal(13, 'Bizarro', 4);
-	animals.add(myAnimal);
-	
+```javascript
+const myAnimal = new Animal(13, 'Bizarro', 4);
+animals.add(myAnimal);
+```
+
 #### Iterate through items
 
 I consider this to be the most important feature of this library. Using `.each()`, you can iterate through all the items in the collection, then either perform a callback on each item or call an instance method of the class that gets applied to every item in the collection.
 
 **Example**
 
-	animals.each(function(animal) {
-		animal.legs++; // Mutate the animal
-	});
-	
-	// OR
-	
-	animals.each().speak(); // Assuming the `.speak()` method exists on the Animal class
+```javascript
+animals.each(function(animal) {
+	animal.legs++; // Mutate the animal
+});
+
+// OR
+
+animals.each().speak(); // Assuming the `.speak()` method exists on the Animal class
+```
