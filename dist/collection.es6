@@ -1,13 +1,6 @@
 const shouldEvaluate = Symbol('evaluate');
 const shouldCycle = Symbol('cycle');
-const flags = {
-    evaluate: shouldEvaluate,
-    cycle: shouldCycle
-};
-function setFlag(val, flag) {
-    const symbol = flags[flag];
-    val[symbol] = true;
-}
+
 function parseParam(e, i) {
     if (e[shouldEvaluate]) {
         return e(i);
@@ -69,11 +62,11 @@ class Collection {
         return this._items;
     }
     static eval(func) {
-        setFlag(func, 'evaluate');
+        func[shouldEvaluate] = true;
         return func;
     }
     static cycle(array) {
-        setFlag(array, 'cycle');
+        array[shouldCycle] = true;
         return array;
     }
     static get index() {

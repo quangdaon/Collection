@@ -31,9 +31,11 @@ export default [
 		plugins: [
 			typescript({
 				exclude: ['src/index.ts'],
+				useTsconfigDeclarationDir: true,
 				tsconfigOverride: {
 					compilerOptions: {
-						declaration: true
+						declaration: true,
+						declarationDir: 'dist/types'
 					}
 				}
 			}),

@@ -1,5 +1,4 @@
-declare const shouldEvaluate: unique symbol;
-declare const shouldCycle: unique symbol;
+import { shouldCycle, shouldEvaluate } from './flags';
 export declare type Flaggable<T> = T & {
     [shouldEvaluate]?: boolean;
     [shouldCycle]?: boolean;

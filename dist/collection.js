@@ -4,6 +4,9 @@
   (global.Collection = factory());
 }(this, (function () { 'use strict';
 
+  var shouldEvaluate = Symbol('evaluate');
+  var shouldCycle = Symbol('cycle');
+
   var classCallCheck = function (instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -38,16 +41,6 @@
     }
   };
 
-  var shouldEvaluate = Symbol('evaluate');
-  var shouldCycle = Symbol('cycle');
-  var flags = {
-      evaluate: shouldEvaluate,
-      cycle: shouldCycle
-  };
-  function setFlag(val, flag) {
-      var symbol = flags[flag];
-      val[symbol] = true;
-  }
   function parseParam(e, i) {
       if (e[shouldEvaluate]) {
           return e(i);
@@ -135,13 +128,13 @@
       }], [{
           key: 'eval',
           value: function _eval(func) {
-              setFlag(func, 'evaluate');
+              func[shouldEvaluate] = true;
               return func;
           }
       }, {
           key: 'cycle',
           value: function cycle(array) {
-              setFlag(array, 'cycle');
+              array[shouldCycle] = true;
               return array;
           }
       }, {

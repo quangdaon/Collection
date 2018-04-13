@@ -1,10 +1,4 @@
-const shouldEvaluate: unique symbol = Symbol('evaluate');
-const shouldCycle: unique symbol = Symbol('cycle');
-
-const flags: { [key: string]: symbol } = {
-	evaluate: shouldEvaluate,
-	cycle: shouldCycle
-};
+import { shouldCycle, shouldEvaluate } from './flags';
 
 export type Flaggable<T> = T & {
 	[shouldEvaluate]?: boolean
@@ -17,11 +11,6 @@ export interface LooseObject {
 
 export type ChainableFunctions<T> = {
 	[key in keyof T]: (...args: any[]) => ChainableFunctions<T>
-}
-
-function setFlag(val: Flaggable<any>, flag: string) {
-	const symbol: symbol = flags[flag];
-	val[symbol] = true;
 }
 
 function parseParam(e: any, i: number): any {
@@ -98,12 +87,12 @@ class Collection<T extends LooseObject> {
 	}
 
 	public static eval(func: Flaggable<Function>): Flaggable<Function> {
-		setFlag(func, 'evaluate');
+		func[shouldEvaluate] = true;
 		return func;
 	}
 
 	public static cycle(array: Flaggable<any[]>): Flaggable<any[]> {
-		setFlag(array, 'cycle');
+		array[shouldCycle] = true;
 		return array;
 	}
 

@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "dist/collection.js",
-	"types": "dist/collection.d.ts",
+	"types": "dist/types/collection.d.ts",
 	"scripts": {
 		"dev": "rollup -c rollup.config.dev.js -w",
 		"build": "rollup -c rollup.config.js"
