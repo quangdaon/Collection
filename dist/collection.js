@@ -40,6 +40,29 @@
 
   var shouldEvaluate = Symbol('evaluate');
   var shouldCycle = Symbol('cycle');
+  var flags = {
+      evaluate: shouldEvaluate,
+      cycle: shouldCycle
+  };
+  function setFlag(val, flag) {
+      var symbol = flags[flag];
+      val[symbol] = true;
+  }
+  function parseParam(e, i) {
+      if (e[shouldEvaluate]) {
+          return e(i);
+      }
+      if (e[shouldCycle]) {
+          return e[i % e.length];
+      }
+      if (e instanceof Array || e.__proto__ === Object.prototype) {
+          e = Object.assign({}, e);
+          Object.keys(e).forEach(function (k) {
+              e[k] = parseParam(e[k], i);
+          });
+      }
+      return e;
+  }
 
   var Collection = function () {
       function Collection(instance) {
@@ -112,13 +135,13 @@
       }], [{
           key: 'eval',
           value: function _eval(func) {
-              func[shouldEvaluate] = true;
+              setFlag(func, 'evaluate');
               return func;
           }
       }, {
           key: 'cycle',
           value: function cycle(array) {
-              array[shouldCycle] = true;
+              setFlag(array, 'cycle');
               return array;
           }
       }, {
@@ -131,22 +154,6 @@
       }]);
       return Collection;
   }();
-
-  function parseParam(e, i) {
-      if (e[shouldEvaluate]) {
-          return e(i);
-      }
-      if (e[shouldCycle]) {
-          return e[i % e.length];
-      }
-      if (e instanceof Array || e.__proto__ === Object.prototype) {
-          e = Object.assign({}, e);
-          Object.keys(e).forEach(function (k) {
-              e[k] = parseParam(e[k], i);
-          });
-      }
-      return e;
-  }
 
   return Collection;
 

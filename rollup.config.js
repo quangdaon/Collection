@@ -29,7 +29,14 @@ export default [
 			format: 'umd'
 		},
 		plugins: [
-			typescript(),
+			typescript({
+				exclude: ['src/index.ts'],
+				tsconfigOverride: {
+					compilerOptions: {
+						declaration: true
+					}
+				}
+			}),
 			babel({
 				exclude: 'node_modules/**',
 				babelrc: false,

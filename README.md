@@ -84,3 +84,9 @@ animals.each(function(animal) {
 
 animals.each().speak(); // Assuming the `.speak()` method exists on the Animal class
 ```
+
+You can even chain them!
+
+```javascript
+animals.each().speak().speak().speak();
+```

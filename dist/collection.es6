@@ -1,5 +1,28 @@
 const shouldEvaluate = Symbol('evaluate');
 const shouldCycle = Symbol('cycle');
+const flags = {
+    evaluate: shouldEvaluate,
+    cycle: shouldCycle
+};
+function setFlag(val, flag) {
+    const symbol = flags[flag];
+    val[symbol] = true;
+}
+function parseParam(e, i) {
+    if (e[shouldEvaluate]) {
+        return e(i);
+    }
+    if (e[shouldCycle]) {
+        return e[i % e.length];
+    }
+    if (e instanceof Array || e.__proto__ === Object.prototype) {
+        e = Object.assign({}, e);
+        Object.keys(e).forEach(k => {
+            e[k] = parseParam(e[k], i);
+        });
+    }
+    return e;
+}
 class Collection {
     constructor(instance) {
         this.instance = instance;
@@ -46,31 +69,16 @@ class Collection {
         return this._items;
     }
     static eval(func) {
-        func[shouldEvaluate] = true;
+        setFlag(func, 'evaluate');
         return func;
     }
     static cycle(array) {
-        array[shouldCycle] = true;
+        setFlag(array, 'cycle');
         return array;
     }
     static get index() {
         return this.eval((i) => i);
     }
-}
-function parseParam(e, i) {
-    if (e[shouldEvaluate]) {
-        return e(i);
-    }
-    if (e[shouldCycle]) {
-        return e[i % e.length];
-    }
-    if (e instanceof Array || e.__proto__ === Object.prototype) {
-        e = Object.assign({}, e);
-        Object.keys(e).forEach(k => {
-            e[k] = parseParam(e[k], i);
-        });
-    }
-    return e;
 }
 
 export default Collection;
