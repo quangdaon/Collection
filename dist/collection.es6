@@ -58,6 +58,19 @@ class Collection {
     query(key) {
         return this.items.map(i => i[key]);
     }
+    remove(condition) {
+        this._items = this._items.filter(function (item) {
+            if (typeof condition === 'function') {
+                return !condition(item);
+            }
+            else {
+                return condition !== item;
+            }
+        });
+    }
+    get(i) {
+        return this._items[i];
+    }
     get items() {
         return this._items;
     }

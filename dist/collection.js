@@ -121,6 +121,22 @@
               });
           }
       }, {
+          key: 'remove',
+          value: function remove(condition) {
+              this._items = this._items.filter(function (item) {
+                  if (typeof condition === 'function') {
+                      return !condition(item);
+                  } else {
+                      return condition !== item;
+                  }
+              });
+          }
+      }, {
+          key: 'get',
+          value: function get$$1(i) {
+              return this._items[i];
+          }
+      }, {
           key: 'items',
           get: function get$$1() {
               return this._items;

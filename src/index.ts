@@ -13,11 +13,15 @@ const animals: Collection<Animal> = new Collection(Animal);
 
 const names: Array<string> = ['a', 'b', 'c'];
 
-animals.generate(names.length, [
+animals.generate(names.length * 4, [
 	Collection.index,
 	Collection.cycle(names)
 ]);
 
 animals.each().speak();
+
+const c: Animal = animals.get(2);
+
+animals.remove(c);
 
 console.log(animals.query('name'));

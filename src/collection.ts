@@ -82,6 +82,22 @@ class Collection<T extends LooseObject> {
 		return this.items.map(i => i[key]);
 	}
 
+	public remove(condition: T): void;
+	public remove(condition: (item: T) => boolean): void;
+	public remove(condition: Function | T): void {
+		this._items = this._items.filter(function (item: T) {
+			if (typeof condition === 'function') {
+				return !condition(item);
+			} else {
+				return condition !== item;
+			}
+		});
+	}
+
+	public get(i: number): T {
+		return this._items[i];
+	}
+
 	public get items(): T[] {
 		return this._items;
 	}
