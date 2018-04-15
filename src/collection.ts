@@ -1,12 +1,12 @@
 import { shouldCycle, shouldEvaluate } from './flags';
 
+export interface LooseObject {
+	[key: string]: any
+}
+
 export type Flaggable<T> = T & {
 	[shouldEvaluate]?: boolean
 	[shouldCycle]?: boolean
-}
-
-export interface LooseObject {
-	[key: string]: any
 }
 
 export type ChainableFunctions<T> = {
@@ -100,6 +100,10 @@ class Collection<T extends LooseObject> {
 
 	public get items(): T[] {
 		return this._items;
+	}
+
+	public get length(): number {
+		return this._items.length;
 	}
 
 	public static eval(func: Flaggable<Function>): Flaggable<Function> {

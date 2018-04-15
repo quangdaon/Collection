@@ -1,11 +1,11 @@
 import { shouldCycle, shouldEvaluate } from './flags';
+export interface LooseObject {
+    [key: string]: any;
+}
 export declare type Flaggable<T> = T & {
     [shouldEvaluate]?: boolean;
     [shouldCycle]?: boolean;
 };
-export interface LooseObject {
-    [key: string]: any;
-}
 export declare type ChainableFunctions<T> = {
     [key in keyof T]: (...args: any[]) => ChainableFunctions<T>;
 };
@@ -27,6 +27,7 @@ declare class Collection<T extends LooseObject> {
     remove(condition: (item: T) => boolean): void;
     get(i: number): T;
     readonly items: T[];
+    readonly length: number;
     static eval(func: Flaggable<Function>): Flaggable<Function>;
     static cycle(array: Flaggable<any[]>): Flaggable<any[]>;
     static readonly index: Function;

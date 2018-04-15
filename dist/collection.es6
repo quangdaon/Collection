@@ -74,6 +74,9 @@ class Collection {
     get items() {
         return this._items;
     }
+    get length() {
+        return this._items.length;
+    }
     static eval(func) {
         func[shouldEvaluate] = true;
         return func;

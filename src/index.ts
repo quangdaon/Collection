@@ -22,6 +22,7 @@ animals.each().speak();
 
 const c: Animal = animals.get(2);
 
-animals.remove(c);
+console.log(animals.length);
+animals.remove(i => i.name === 'c');
 
-console.log(animals.query('name'));
+console.log(animals.length);

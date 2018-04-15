@@ -141,6 +141,11 @@
           get: function get$$1() {
               return this._items;
           }
+      }, {
+          key: 'length',
+          get: function get$$1() {
+              return this._items.length;
+          }
       }], [{
           key: 'eval',
           value: function _eval(func) {
