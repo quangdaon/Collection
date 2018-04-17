@@ -10,12 +10,10 @@ export declare type ChainableFunctions<T> = {
     [key in keyof T]: (...args: any[]) => ChainableFunctions<T>;
 };
 declare class Collection<T extends LooseObject> {
-    instance: {
-        new (...args: any[]): T;
-    };
+    private type;
     methods: string[];
     private _items;
-    constructor(instance: {
+    constructor(type: {
         new (...args: any[]): T;
     });
     add(item: T): void;
@@ -26,6 +24,8 @@ declare class Collection<T extends LooseObject> {
     remove(condition: T): void;
     remove(condition: (item: T) => boolean): void;
     get(i: number): T;
+    test(item: any): boolean;
+    [Symbol.iterator](): IterableIterator<T>;
     readonly items: T[];
     readonly length: number;
     static eval(func: Flaggable<Function>): Flaggable<Function>;

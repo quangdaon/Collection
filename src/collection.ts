@@ -36,16 +36,16 @@ class Collection<T extends LooseObject> {
 	public methods: string[] = [];
 	private _items: T[] = [];
 
-	constructor(public instance: { new(...args: any[]): T }) {
-		Object.getOwnPropertyNames(instance.prototype).forEach(k => {
+	constructor(private type: { new(...args: any[]): T }) {
+		Object.getOwnPropertyNames(type.prototype).forEach(k => {
 			if (k === 'constructor') return;
-			if (typeof instance.prototype[k] === 'function') this.methods.push(k);
+			if (typeof type.prototype[k] === 'function') this.methods.push(k);
 		});
 
 	}
 
 	public add(item: T): void {
-		if (!(item instanceof this.instance)) throw new Error(`Collection expects ${this.instance.prototype.constructor.name}; got ${item.constructor.name}`);
+		if (!(item instanceof this.type)) throw new Error(`Collection expects ${this.type.prototype.constructor.name}; got ${item.constructor.name}`);
 		this._items.push(item);
 	}
 
@@ -73,7 +73,7 @@ class Collection<T extends LooseObject> {
 		for (let i = 0; i < count; i++) {
 			const passed: Array<any> = params ? params.map(e => parseParam(e, i)) : [];
 
-			this.add(new this.instance(...passed));
+			this.add(new this.type(...passed));
 		}
 
 	}
@@ -96,6 +96,23 @@ class Collection<T extends LooseObject> {
 
 	public get(i: number): T {
 		return this._items[i];
+	}
+
+	public test(item: any): boolean {
+		return (item instanceof this.type);
+	}
+
+	public [Symbol.iterator](): Iterator<T> {
+		let index = -1;
+		return {
+			next: (): IteratorResult<T> => {
+				index++;
+				return {
+					done: index === this._items.length,
+					value: this._items[index]
+				};
+			}
+		};
 	}
 
 	public get items(): T[] {

@@ -4,6 +4,7 @@ import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
+import regenerator from 'rollup-plugin-regenerator';
 
 export default [
 	{

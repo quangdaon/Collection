@@ -17,20 +17,20 @@ function parseParam(e, i) {
     return e;
 }
 class Collection {
-    constructor(instance) {
-        this.instance = instance;
+    constructor(type) {
+        this.type = type;
         this.methods = [];
         this._items = [];
-        Object.getOwnPropertyNames(instance.prototype).forEach(k => {
+        Object.getOwnPropertyNames(type.prototype).forEach(k => {
             if (k === 'constructor')
                 return;
-            if (typeof instance.prototype[k] === 'function')
+            if (typeof type.prototype[k] === 'function')
                 this.methods.push(k);
         });
     }
     add(item) {
-        if (!(item instanceof this.instance))
-            throw new Error(`Collection expects ${this.instance.prototype.constructor.name}; got ${item.constructor.name}`);
+        if (!(item instanceof this.type))
+            throw new Error(`Collection expects ${this.type.prototype.constructor.name}; got ${item.constructor.name}`);
         this._items.push(item);
     }
     each(callback) {
@@ -52,7 +52,7 @@ class Collection {
     generate(count, params) {
         for (let i = 0; i < count; i++) {
             const passed = params ? params.map(e => parseParam(e, i)) : [];
-            this.add(new this.instance(...passed));
+            this.add(new this.type(...passed));
         }
     }
     query(key) {
@@ -70,6 +70,12 @@ class Collection {
     }
     get(i) {
         return this._items[i];
+    }
+    test(item) {
+        return (item instanceof this.type);
+    }
+    get [Symbol.iterator]() {
+        return this._items[Symbol.iterator]
     }
     get items() {
         return this._items;

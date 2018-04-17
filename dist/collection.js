@@ -58,24 +58,24 @@
   }
 
   var Collection = function () {
-      function Collection(instance) {
+      function Collection(type) {
           var _this = this;
 
           classCallCheck(this, Collection);
 
-          this.instance = instance;
+          this.type = type;
           this.methods = [];
           this._items = [];
-          Object.getOwnPropertyNames(instance.prototype).forEach(function (k) {
+          Object.getOwnPropertyNames(type.prototype).forEach(function (k) {
               if (k === 'constructor') return;
-              if (typeof instance.prototype[k] === 'function') _this.methods.push(k);
+              if (typeof type.prototype[k] === 'function') _this.methods.push(k);
           });
       }
 
       createClass(Collection, [{
           key: 'add',
           value: function add(item) {
-              if (!(item instanceof this.instance)) throw new Error('Collection expects ' + this.instance.prototype.constructor.name + '; got ' + item.constructor.name);
+              if (!(item instanceof this.type)) throw new Error('Collection expects ' + this.type.prototype.constructor.name + '; got ' + item.constructor.name);
               this._items.push(item);
           }
       }, {
@@ -106,7 +106,7 @@
                   var passed = params ? params.map(function (e) {
                       return parseParam(e, i);
                   }) : [];
-                  _this3.add(new (Function.prototype.bind.apply(_this3.instance, [null].concat(toConsumableArray(passed))))());
+                  _this3.add(new (Function.prototype.bind.apply(_this3.type, [null].concat(toConsumableArray(passed))))());
               };
 
               for (var i = 0; i < count; i++) {
@@ -136,6 +136,42 @@
           value: function get$$1(i) {
               return this._items[i];
           }
+      }, {
+          key: 'test',
+          value: function test(item) {
+              return item instanceof this.type;
+          }
+      }, {
+          key: Symbol.iterator,
+          value: /*#__PURE__*/regeneratorRuntime.mark(function value() {
+              var i;
+              return regeneratorRuntime.wrap(function value$(_context) {
+                  while (1) {
+                      switch (_context.prev = _context.next) {
+                          case 0:
+                              i = 0;
+
+                          case 1:
+                              if (!(i < this._items.length)) {
+                                  _context.next = 7;
+                                  break;
+                              }
+
+                              _context.next = 4;
+                              return this._items[i];
+
+                          case 4:
+                              i++;
+                              _context.next = 1;
+                              break;
+
+                          case 7:
+                          case 'end':
+                              return _context.stop();
+                      }
+                  }
+              }, value, this);
+          })
       }, {
           key: 'items',
           get: function get$$1() {
