@@ -25,7 +25,7 @@ declare class Collection<T extends LooseObject> {
     remove(condition: (item: T) => boolean): void;
     get(i: number): T;
     test(item: any): boolean;
-    [Symbol.iterator](): IterableIterator<T>;
+    [Symbol.iterator](): Iterator<T>;
     readonly items: T[];
     readonly length: number;
     static eval(func: Flaggable<Function>): Flaggable<Function>;

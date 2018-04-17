@@ -143,35 +143,20 @@
           }
       }, {
           key: Symbol.iterator,
-          value: /*#__PURE__*/regeneratorRuntime.mark(function value() {
-              var i;
-              return regeneratorRuntime.wrap(function value$(_context) {
-                  while (1) {
-                      switch (_context.prev = _context.next) {
-                          case 0:
-                              i = 0;
+          value: function value() {
+              var _this4 = this;
 
-                          case 1:
-                              if (!(i < this._items.length)) {
-                                  _context.next = 7;
-                                  break;
-                              }
-
-                              _context.next = 4;
-                              return this._items[i];
-
-                          case 4:
-                              i++;
-                              _context.next = 1;
-                              break;
-
-                          case 7:
-                          case 'end':
-                              return _context.stop();
-                      }
+              var index = -1;
+              return {
+                  next: function next() {
+                      index++;
+                      return {
+                          done: index === _this4._items.length,
+                          value: _this4._items[index]
+                      };
                   }
-              }, value, this);
-          })
+              };
+          }
       }, {
           key: 'items',
           get: function get$$1() {

@@ -74,8 +74,17 @@ class Collection {
     test(item) {
         return (item instanceof this.type);
     }
-    get [Symbol.iterator]() {
-        return this._items[Symbol.iterator]
+    [Symbol.iterator]() {
+        let index = -1;
+        return {
+            next: () => {
+                index++;
+                return {
+                    done: index === this._items.length,
+                    value: this._items[index]
+                };
+            }
+        };
     }
     get items() {
         return this._items;
