@@ -13,23 +13,23 @@ export type ChainableFunctions<T> = {
 	[key in keyof T]: (...args: any[]) => ChainableFunctions<T>
 }
 
-function parseParam(e: any, i: number): any {
-	if (e[shouldEvaluate]) {
-		return e(i);
+function parseParam(property: any, currentIndex: number): any {
+	if (property[shouldEvaluate]) {
+		return property(currentIndex);
 	}
 
-	if (e[shouldCycle]) {
-		return e[i % e.length];
+	if (property[shouldCycle]) {
+		return property[currentIndex % property.length];
 	}
 
-	if (e instanceof Array || e.__proto__ === Object.prototype) {
-		e = { ...e };
-		Object.keys(e).forEach(k => {
-			e[k] = parseParam(e[k], i);
+	if (property instanceof Array || property.__proto__ === Object.prototype) {
+		property = { ...property };
+		Object.keys(property).forEach(k => {
+			property[k] = parseParam(property[k], currentIndex);
 		});
 	}
 
-	return e;
+	return property;
 }
 
 class Collection<T extends LooseObject> {
@@ -123,7 +123,7 @@ class Collection<T extends LooseObject> {
 		return this._items.length;
 	}
 
-	public static eval(func: Flaggable<Function>): Flaggable<Function> {
+	public static invoke(func: Flaggable<Function>): Flaggable<Function> {
 		func[shouldEvaluate] = true;
 		return func;
 	}
@@ -134,7 +134,7 @@ class Collection<T extends LooseObject> {
 	}
 
 	public static get index(): Function {
-		return this.eval((i: number) => i);
+		return this.invoke((i: number) => i);
 	}
 }
 
