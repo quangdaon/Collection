@@ -115,6 +115,10 @@ class Collection<T extends LooseObject> {
 		};
 	}
 
+	public random(): T {
+		return this._items[Math.floor(Math.random() * this._items.length)];
+	}
+
 	public get items(): T[] {
 		return this._items;
 	}
